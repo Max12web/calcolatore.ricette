@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <link rel="icon" href="icona.png" type="image/png">
+<link rel="apple-touch-icon" href="icona.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore Ricette</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: #333;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        input {
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e6e6e6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calcolatore Ricette</h1>
+
+    <!-- Primo Calcolatore: Adattamento alla Dimensione della Tortiera -->
+    <h2>Adatta la Ricetta a una Nuova Tortiera</h2>
+    <label>Diametro Tortiera Originale (cm):</label>
+    <input type="number" id="originalDiameter" placeholder="Ad esempio: 20">
+
+    <label>Diametro Tortiera Nuova (cm):</label>
+    <input type="number" id="newDiameter" placeholder="Ad esempio: 25">
+
+    <label>Dose Base (gr/ml):</label>
+    <input type="number" id="baseAmount" placeholder="Ad esempio: 200">
+
+    <button onclick="calculateNewAmount()">Calcola Nuova Dose</button>
+
+    <div id="newAmountResult" class="result"></div>
+
+    <!-- Secondo Calcolatore: Proporzione Ricetta in Base al Peso -->
+    <h2>Proporzione Ricetta per Peso Finale</h2>
+    <label>Dose Base (gr/ml):</label>
+    <input type="number" id="baseWeight" placeholder="Ad esempio: 500">
+
+    <label>Peso Finale Desiderato (gr/ml):</label>
+    <input type="number" id="desiredWeight" placeholder="Ad esempio: 750">
+
+    <button onclick="calculateProportionalAmount()">Calcola Dose Proporzionata</button>
+
+    <div id="proportionalAmountResult" class="result"></div>
+
+    <script>
+        // Calcolo nuova dose in base al cambio di diametro della tortiera
+        function calculateNewAmount() {
+            const originalDiameter = parseFloat(document.getElementById('originalDiameter').value);
+            const newDiameter = parseFloat(document.getElementById('newDiameter').value);
+            const baseAmount = parseFloat(document.getElementById('baseAmount').value);
+
+            if (isNaN(originalDiameter) || isNaN(newDiameter) || isNaN(baseAmount)) {
+                document.getElementById('newAmountResult').innerText = 'Inserisci tutti i valori correttamente!';
+                return;
+            }
+
+            // Calcolo dell'area delle tortiere (πr^2)
+            const originalArea = Math.PI * Math.pow(originalDiameter / 2, 2);
+            const newArea = Math.PI * Math.pow(newDiameter / 2, 2);
+
+            // Calcolo nuova dose
+            const newAmount = (newArea / originalArea) * baseAmount;
+            document.getElementById('newAmountResult').innerText = `La nuova dose dovrebbe essere: ${newAmount.toFixed(2)} gr/ml.`;
+        }
+
+        // Calcolo proporzione delle dosi in base al peso finale desiderato
+        function calculateProportionalAmount() {
+            const baseWeight = parseFloat(document.getElementById('baseWeight').value);
+            const desiredWeight = parseFloat(document.getElementById('desiredWeight').value);
+
+            if (isNaN(baseWeight) || isNaN(desiredWeight)) {
+                document.getElementById('proportionalAmountResult').innerText = 'Inserisci tutti i valori correttamente!';
+                return;
+            }
+
+            // Calcolo del fattore di proporzione
+            const proportionFactor = desiredWeight / baseWeight;
+            document.getElementById('proportionalAmountResult').innerText = `Moltiplica tutte le dosi per: ${proportionFactor.toFixed(2)}.`;
+        }
+    </script>
+</body>
+</html>
